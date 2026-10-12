@@ -1,0 +1,104 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "title": {
+    "text": "The Growth of LEGO Sets Over Time",
+    "subtitle": "Total LEGO sets released each year (1949–2023)",
+    "fontSize": 20,
+    "subtitleFontSize": 13,
+    "anchor": "start"
+  },
+
+  "width": 700,
+  "height": 350,
+
+  "data": {
+    "url": "Data/lego_sets_and_themes.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "year_released": "number"
+      }
+    }
+  },
+
+  "transform": [
+    {
+      "filter": "isValid(datum.year_released) && isValid(datum.set_number) && datum.year_released >= 1949 && datum.year_released <= 2023"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "as": "total_sets"
+        }
+      ],
+      "groupby": ["year_released"]
+    }
+  ],
+
+  "mark": {
+    "type": "line",
+    "color": "#E3000B",
+    "strokeWidth": 3,
+    "point": {
+      "filled": true,
+      "size": 35
+    }
+  },
+
+  "encoding": {
+    "x": {
+      "field": "year_released",
+      "type": "quantitative",
+      "title": "Release Year",
+      "scale": {
+        "domain": [1949, 2023]
+      },
+      "axis": {
+        "format": "d",
+        "tickCount": 10,
+        "grid": false
+      }
+    },
+
+    "y": {
+      "field": "total_sets",
+      "type": "quantitative",
+      "title": "Number of LEGO Sets Released",
+      "scale": {
+        "zero": true
+      },
+      "axis": {
+        "grid": true,
+        "tickCount": 6
+      }
+    },
+
+    "tooltip": [
+      {
+        "field": "year_released",
+        "type": "quantitative",
+        "title": "Year",
+        "format": "d"
+      },
+      {
+        "field": "total_sets",
+        "type": "quantitative",
+        "title": "Sets Released",
+        "format": ","
+      }
+    ]
+  },
+
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 13
+    }
+  }
+}

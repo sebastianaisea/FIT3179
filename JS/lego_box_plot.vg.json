@@ -1,0 +1,316 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Are LEGO Sets Getting Bigger Over Time?",
+    "subtitle": [
+      "Middle 50% and 1.5 IQR whiskers; outlier points hidden",
+      "2020s includes 2020?2023 only"
+    ],
+    "fontSize": 20,
+    "subtitleFontSize": 13,
+    "anchor": "start"
+  },
+  "width": 700,
+  "height": 400,
+  "data": {
+    "url": "Data/lego_sets_and_themes.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "year_released": "number",
+        "number_of_parts": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.year_released) && isValid(datum.number_of_parts) && datum.number_of_parts > 0 && datum.year_released >= 1950 && datum.year_released <= 2023"
+    },
+    {
+      "calculate": "floor(datum.year_released / 10) * 10",
+      "as": "decade"
+    },
+    {
+      "calculate": "toString(datum.decade) + 's'",
+      "as": "decade_label"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "q1",
+          "field": "number_of_parts",
+          "as": "q1"
+        },
+        {
+          "op": "median",
+          "field": "number_of_parts",
+          "as": "median"
+        },
+        {
+          "op": "q3",
+          "field": "number_of_parts",
+          "as": "q3"
+        }
+      ],
+      "groupby": [
+        "decade_label"
+      ]
+    },
+    {
+      "calculate": "datum.number_of_parts >= datum.q1 - 1.5 * (datum.q3 - datum.q1) && datum.number_of_parts <= datum.q3 + 1.5 * (datum.q3 - datum.q1) ? datum.number_of_parts : null",
+      "as": "inlier_parts"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "min",
+          "field": "inlier_parts",
+          "as": "lower_whisker"
+        },
+        {
+          "op": "max",
+          "field": "inlier_parts",
+          "as": "upper_whisker"
+        },
+        {
+          "op": "max",
+          "field": "q1",
+          "as": "q1"
+        },
+        {
+          "op": "max",
+          "field": "median",
+          "as": "median"
+        },
+        {
+          "op": "max",
+          "field": "q3",
+          "as": "q3"
+        },
+        {
+          "op": "count",
+          "as": "set_count"
+        },
+        {
+          "op": "valid",
+          "field": "inlier_parts",
+          "as": "inlier_count"
+        },
+        {
+          "op": "max",
+          "field": "number_of_parts",
+          "as": "maximum"
+        }
+      ],
+      "groupby": [
+        "decade_label"
+      ]
+    },
+    {
+      "calculate": "datum.set_count - datum.inlier_count",
+      "as": "outlier_count"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "decade_label",
+      "type": "ordinal",
+      "title": "Release Decade",
+      "sort": [
+        "1950s",
+        "1960s",
+        "1970s",
+        "1980s",
+        "1990s",
+        "2000s",
+        "2010s",
+        "2020s"
+      ],
+      "axis": {
+        "labelAngle": 0
+      }
+    },
+    "tooltip": [
+      {
+        "field": "decade_label",
+        "type": "ordinal",
+        "title": "Decade"
+      },
+      {
+        "field": "set_count",
+        "type": "quantitative",
+        "title": "Sets with positive piece counts",
+        "format": ",.0f"
+      },
+      {
+        "field": "lower_whisker",
+        "type": "quantitative",
+        "title": "Lower whisker",
+        "format": ",.0f"
+      },
+      {
+        "field": "q1",
+        "type": "quantitative",
+        "title": "Q1 (25th percentile)",
+        "format": ",.2~f"
+      },
+      {
+        "field": "median",
+        "type": "quantitative",
+        "title": "Median",
+        "format": ",.2~f"
+      },
+      {
+        "field": "q3",
+        "type": "quantitative",
+        "title": "Q3 (75th percentile)",
+        "format": ",.2~f"
+      },
+      {
+        "field": "upper_whisker",
+        "type": "quantitative",
+        "title": "Upper whisker",
+        "format": ",.0f"
+      },
+      {
+        "field": "outlier_count",
+        "type": "quantitative",
+        "title": "Hidden outliers",
+        "format": ",.0f"
+      },
+      {
+        "field": "maximum",
+        "type": "quantitative",
+        "title": "Largest set (pieces)",
+        "format": ",.0f"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 13
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#E3000B"
+      },
+      "encoding": {
+        "y": {
+          "field": "lower_whisker",
+          "type": "quantitative",
+          "title": "Number of LEGO Pieces",
+          "scale": {
+            "zero": true
+          },
+          "axis": {
+            "format": ",.0f",
+            "tickCount": 7
+          }
+        },
+        "y2": {
+          "field": "upper_whisker"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "size": 45,
+        "color": "#E3000B"
+      },
+      "encoding": {
+        "y": {
+          "field": "q1",
+          "type": "quantitative",
+          "title": "Number of LEGO Pieces",
+          "scale": {
+            "zero": true
+          },
+          "axis": {
+            "format": ",.0f",
+            "tickCount": 7
+          }
+        },
+        "y2": {
+          "field": "q3"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "orient": "horizontal",
+        "size": 45,
+        "thickness": 3,
+        "color": "#222222"
+      },
+      "encoding": {
+        "y": {
+          "field": "median",
+          "type": "quantitative",
+          "title": "Number of LEGO Pieces",
+          "scale": {
+            "zero": true
+          },
+          "axis": {
+            "format": ",.0f",
+            "tickCount": 7
+          }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "orient": "horizontal",
+        "size": 22,
+        "thickness": 1,
+        "color": "#E3000B"
+      },
+      "encoding": {
+        "y": {
+          "field": "lower_whisker",
+          "type": "quantitative",
+          "title": "Number of LEGO Pieces",
+          "scale": {
+            "zero": true
+          },
+          "axis": {
+            "format": ",.0f",
+            "tickCount": 7
+          }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "orient": "horizontal",
+        "size": 22,
+        "thickness": 1,
+        "color": "#E3000B"
+      },
+      "encoding": {
+        "y": {
+          "field": "upper_whisker",
+          "type": "quantitative",
+          "title": "Number of LEGO Pieces",
+          "scale": {
+            "zero": true
+          },
+          "axis": {
+            "format": ",.0f",
+            "tickCount": 7
+          }
+        }
+      }
+    }
+  ]
+}

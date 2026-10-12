@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>The Evolution of LEGO</title>
+
+  <!-- Vega-Lite Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <!-- CSS Styling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #FFFDF5;
+      margin: 0;
+      padding: 40px;
+      color: #222222;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #666666;
+      margin-bottom: 40px;
+    }
+
+    .chart-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      margin-bottom: 40px;
+      overflow-x: auto;
+    }
+
+    .description {
+      margin-top: 20px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #444444;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <!-- JavaScript -->
+  <script src="vega_lite_vis.js" defer></script>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Main Title -->
+    <h1>The Evolution of LEGO</h1>
+
+    <p class="subtitle">
+      Exploring LEGO's growth and changing product
+      range from 1949 to 2023.
+    </p>
+
+    <!-- GRAPH 1: LINE CHART -->
+    <section class="chart-container">
+
+      <h2>1. The Growth of LEGO Sets</h2>
+
+      <div id="lego_line_chart"></div>
+
+      <p class="description">
+        This visualisation shows the total number of
+        LEGO sets released each year from 1949 to 2023.
+        It highlights how LEGO's product catalogue has
+        evolved over time, revealing periods of rapid
+        growth and changes in release activity.
+      </p>
+
+    </section>
+
+    <!-- GRAPH 2: BOX PLOT -->
+    <section class="chart-container">
+
+      <h2>2. Are LEGO Sets Getting Bigger?</h2>
+
+      <div id="lego_box_plot"></div>
+
+      <p class="description">
+        This box plot compares the distribution of
+        LEGO piece counts across different decades,
+        from the 1950s to the 2020s.
+
+        Boxes show the middle 50% of piece counts, with a dark line marking
+        the median. Whiskers reach the smallest and largest observed counts
+        within 1.5 times the interquartile range (IQR) of the box.
+        Outlier points are hidden to keep typical set sizes readable, but all
+        positive piece counts contribute to the quartiles and median.
+        Hover for summary statistics, hidden outlier counts and the largest set.
+        Sets with missing or zero piece counts are excluded; the 2020s covers
+        2020?2023 only.
+      </p>
+
+    </section>
+
+  </div>
+
+</body>
+</html>
