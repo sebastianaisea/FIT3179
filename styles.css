@@ -105,3 +105,5 @@ footer p { margin: 0; }
 /* Sources sit at the end; introductory questions use the available width. */
 .introduction .questions { grid-column: 1 / -1; }
 .data-sources-section { padding: 16px; margin-bottom: 18px; }
+
+.chart-load-error { padding: 16px; border: 1px solid #d9000b; border-radius: 8px; color: #9c0008; font-size: 13px; overflow-wrap: anywhere; }
