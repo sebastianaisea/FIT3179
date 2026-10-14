@@ -1,17 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Are LEGO Sets Getting Bigger Over Time?",
-    "subtitle": [
-      "Middle 50% and 1.5 IQR whiskers; outlier points hidden",
-      "2020s includes 2020?2023 only"
-    ],
-    "fontSize": 20,
-    "subtitleFontSize": 13,
-    "anchor": "start"
-  },
-  "width": 700,
-  "height": 400,
+  "title": null,
+  "width": "container",
+  "height": 300,
   "data": {
     "url": "Data/lego_sets_and_themes.csv",
     "format": {
@@ -191,8 +182,9 @@
       "stroke": null
     },
     "axis": {
-      "labelFontSize": 12,
-      "titleFontSize": 13
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "gridColor": "#e8e5dd"
     }
   },
   "layer": [
@@ -222,7 +214,7 @@
     {
       "mark": {
         "type": "bar",
-        "size": 45,
+        "size": 28,
         "color": "#E3000B"
       },
       "encoding": {
@@ -247,7 +239,7 @@
       "mark": {
         "type": "tick",
         "orient": "horizontal",
-        "size": 45,
+        "size": 28,
         "thickness": 3,
         "color": "#222222"
       },
@@ -312,5 +304,10 @@
         }
       }
     }
-  ]
+  ],
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "transparent"
 }

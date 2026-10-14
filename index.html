@@ -1,128 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-  <title>The Evolution of LEGO</title>
-
-  <!-- Vega-Lite Libraries -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building the World of LEGO</title>
+  <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-
-  <!-- CSS Styling -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #FFFDF5;
-      margin: 0;
-      padding: 40px;
-      color: #222222;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 36px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 16px;
-      color: #666666;
-      margin-bottom: 40px;
-    }
-
-    .chart-container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-      margin-bottom: 40px;
-      overflow-x: auto;
-    }
-
-    .description {
-      margin-top: 20px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #444444;
-    }
-
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-  </style>
-
-  <!-- JavaScript -->
   <script src="vega_lite_vis.js" defer></script>
-
 </head>
-
 <body>
-
-  <div class="container">
-
-    <!-- Main Title -->
-    <h1>The Evolution of LEGO</h1>
-
-    <p class="subtitle">
-      Exploring LEGO's growth and changing product
-      range from 1949 to 2023.
-    </p>
-
-    <!-- GRAPH 1: LINE CHART -->
-    <section class="chart-container">
-
-      <h2>1. The Growth of LEGO Sets</h2>
-
-      <div id="lego_line_chart"></div>
-
-      <p class="description">
-        This visualisation shows the total number of
-        LEGO sets released each year from 1949 to 2023.
-        It highlights how LEGO's product catalogue has
-        evolved over time, revealing periods of rapid
-        growth and changes in release activity.
-      </p>
-
+<a class="skip-link" href="#introduction">Skip to content</a>
+<div class="container">
+  <header class="hero">
+    <div class="hero-title"><h1>Building the World of <span>LEGO</span></h1><p class="subtitle">75 Years of Sets, Themes and Innovation (1949 &ndash; 2023)</p></div>
+    <p class="hero-note">A data visualisation exploring how LEGO sets have evolved over time, which themes have shaped its history and its presence in Australia.</p>
+  </header>
+  <nav class="section-nav" aria-label="Visualisation sections">
+    <a href="#introduction" aria-current="location">Introduction</a><a href="#growth">1. Growth</a><a href="#set-sizes">2. Set Sizes</a><a href="#themes">3. Themes</a><a href="#builders">4. Builders</a><a href="#australia">5. Australia</a><a href="#takeaways">6. Key Takeaways</a>
+  </nav>
+  <main>
+    <section id="introduction" class="introduction panel" aria-labelledby="intro-heading">
+      <div class="intro-copy"><h2 id="intro-heading">Introduction</h2><p class="intro-lead">From a simple wooden toy to a global phenomenon, LEGO has inspired creativity for generations.</p><p>This visualisation explores LEGO sets, themes, complexity and geographic presence over time, with a focus on questions relevant to an Australian audience.</p></div>
+      <aside class="info-card questions"><h3>Key questions</h3><ul><li>How has the number of LEGO sets changed over time?</li><li>Are LEGO sets getting bigger?</li><li>Which themes have been most popular?</li><li>How has LEGO catered to different ages?</li><li>Where are LEGO stores located in Australia?</li></ul></aside>
+      <aside class="info-card sources"><h3>Data sources</h3><ul><li><strong>LEGO sets and themes dataset</strong><br>Current project CSV (1949&ndash;2023): set names, release years, piece counts and themes.</li><li><strong>Australian LEGO store locations</strong><br>Planned source for store names, addresses and coordinates.</li><li><strong>ABS population data</strong><br>Planned source for comparisons of stores per person.</li></ul></aside>
     </section>
-
-    <!-- GRAPH 2: BOX PLOT -->
-    <section class="chart-container">
-
-      <h2>2. Are LEGO Sets Getting Bigger?</h2>
-
-      <div id="lego_box_plot"></div>
-
-      <p class="description">
-        This box plot compares the distribution of
-        LEGO piece counts across different decades,
-        from the 1950s to the 2020s.
-
-        Boxes show the middle 50% of piece counts, with a dark line marking
-        the median. Whiskers reach the smallest and largest observed counts
-        within 1.5 times the interquartile range (IQR) of the box.
-        Outlier points are hidden to keep typical set sizes readable, but all
-        positive piece counts contribute to the quartiles and median.
-        Hover for summary statistics, hidden outlier counts and the largest set.
-        Sets with missing or zero piece counts are excluded; the 2020s covers
-        2020?2023 only.
-      </p>
-
-    </section>
-
-  </div>
-
+    <section id="growth" class="story-section growth" aria-labelledby="growth-heading"><header class="section-banner"><h2 id="growth-heading">1. The Rise of LEGO</h2><p>How has LEGO's product range grown over time?</p></header><div class="section-content two-columns"><article class="chart-panel"><h3><span>1.1</span> Number of LEGO sets released per year</h3><p class="chart-subtitle">A look at LEGO's growth from 1949 to 2023.</p><div id="lego_line_chart" class="chart" aria-label="Annual LEGO set releases"></div><p class="chart-note">Hover over a year to see its total number of releases.</p></article><article class="chart-panel"><h3><span>1.2</span> Growth comparison between decades</h3><p class="chart-subtitle">How many sets were released in each decade?</p><div class="chart-placeholder"><strong>Decade comparison</strong><p>Visualisation to be added</p></div></article></div></section>
+    <section id="set-sizes" class="story-section set-sizes" aria-labelledby="set-sizes-heading"><header class="section-banner"><h2 id="set-sizes-heading">2. Are LEGO Sets Getting Bigger?</h2><p>Exploring how set sizes have changed over time.</p></header><div class="section-content two-columns"><article class="chart-panel"><h3><span>2.1</span> Distribution of piece counts by decade</h3><p class="chart-subtitle">Are LEGO sets becoming more complex?</p><div id="lego_box_plot" class="chart" aria-label="LEGO piece counts by decade"></div><p class="chart-note">Boxes show the middle 50% of piece counts; dark lines mark medians. Whiskers reach observed values within 1.5 times the interquartile range. Outlier points are hidden but remain in the quartile calculations. Hover for statistics and maximum set sizes. Missing or zero piece counts are excluded. The 2020s covers 2020&ndash;2023 only.</p></article><article class="chart-panel"><h3><span>2.2</span> Piece count distribution</h3><p class="chart-subtitle">How do set sizes vary across decades?</p><div class="chart-placeholder"><strong>Piece count distribution</strong><p>Visualisation to be added</p></div></article></div></section>
+    <section id="themes" class="story-section themes" aria-labelledby="themes-heading"><header class="section-banner"><h2 id="themes-heading">3. The Themes That Shaped LEGO</h2><p>Which themes were most popular and how have they changed?</p></header><div class="section-content three-columns"><article class="chart-panel"><h3><span>3.1</span> Theme popularity over time</h3><p class="chart-subtitle">How active were different themes each year?</p><div class="chart-placeholder"><strong>Theme activity</strong><p>Visualisation to be added</p></div></article><article class="chart-panel"><h3><span>3.2</span> Top themes over time</h3><p class="chart-subtitle">How have the most popular themes changed?</p><div class="chart-placeholder"><strong>Theme rankings</strong><p>Visualisation to be added</p></div></article><article class="chart-panel"><h3><span>3.3</span> Theme composition</h3><p class="chart-subtitle">Which themes make up the most sets?</p><div class="chart-placeholder"><strong>Theme composition</strong><p>Visualisation to be added</p></div></article></div></section>
+    <section id="builders" class="story-section builders" aria-labelledby="builders-heading"><header class="section-banner"><h2 id="builders-heading">4. LEGO for Different Builders</h2><p>How does LEGO cater to different ages and preferences?</p></header><div class="section-content two-columns"><article class="chart-panel"><h3><span>4.1</span> Recommended age vs. piece count</h3><p class="chart-subtitle">Do older age groups get more complex sets?</p><div class="chart-placeholder"><strong>Age and set size</strong><p>Visualisation to be added</p></div></article><article class="chart-panel"><h3><span>4.2</span> Average piece count by theme and age group</h3><p class="chart-subtitle">Which themes are most complex for each age group?</p><div class="chart-placeholder"><strong>Themes and age groups</strong><p>Visualisation to be added</p></div></article><p class="section-note">Recommended ages are not included in the current dataset. These comparisons need an additional verified data source.</p></div></section>
+    <section id="australia" class="story-section australia" aria-labelledby="australia-heading"><header class="section-banner"><h2 id="australia-heading">5. LEGO's Footprint in Australia</h2><p>Where are LEGO stores located across Australia?</p></header><div class="section-content three-columns"><article class="chart-panel"><h3><span>5.1</span> LEGO stores by state (per capita)</h3><p class="chart-subtitle">Number of stores per 1 million people.</p><div class="chart-placeholder"><strong>State comparison map</strong><p>Visualisation to be added</p></div></article><article class="chart-panel"><h3><span>5.2</span> LEGO store locations</h3><p class="chart-subtitle">Where are LEGO stores located?</p><div class="chart-placeholder"><strong>Store location map</strong><p>Visualisation to be added</p></div></article><article class="chart-panel"><h3><span>5.3</span> Store density (binned map)</h3><p class="chart-subtitle">Where are stores most concentrated?</p><div class="chart-placeholder"><strong>Store density map</strong><p>Visualisation to be added</p></div></article></div></section>
+    <section id="takeaways" class="story-section takeaways" aria-labelledby="takeaways-heading"><header class="section-banner"><h2 id="takeaways-heading">6. Key Takeaways</h2><p>What have we learned from the data?</p></header><div class="section-content takeaway-content"><p>Findings will be added as the visualisations and supporting data are completed.</p></div></section>
+  </main>
+  <footer><p><strong>Current data:</strong> LEGO sets and themes CSV (1949&ndash;2023). Additional sources will be documented when added.</p><p>Monash University &middot; FIT3179 Data Visualisation 2</p></footer>
+</div>
 </body>
 </html>
