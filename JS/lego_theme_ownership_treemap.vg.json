@@ -1,0 +1,217 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Top 10 LEGO themes by ownership records reported by Rebrickable users, not worldwide sales or unique owners. Rectangle area is proportional to sets_recorded_owned.",
+  "width": 500,
+  "height": 340,
+  "padding": 0,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding",
+    "resize": true
+  },
+  "background": "transparent",
+  "data": [
+    {
+      "name": "owned",
+      "url": "Data/lego_most_owned_themes_rebrickable_top10.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "rank": "number",
+          "sets_recorded_owned": "number",
+          "sets_in_database": "number"
+        }
+      }
+    },
+    {
+      "name": "ownership_root",
+      "values": [
+        {
+          "theme": "__root__",
+          "sets_recorded_owned": 0,
+          "rank": 0
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "source": [
+        "ownership_root",
+        "owned"
+      ],
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum.theme === '__root__' ? null : '__root__'",
+          "as": "parent"
+        },
+        {
+          "type": "stratify",
+          "key": "theme",
+          "parentKey": "parent"
+        },
+        {
+          "type": "treemap",
+          "field": "sets_recorded_owned",
+          "sort": {
+            "field": "value",
+            "order": "descending"
+          },
+          "method": "squarify",
+          "ratio": 1.6,
+          "size": [
+            {
+              "signal": "width"
+            },
+            {
+              "signal": "height"
+            }
+          ],
+          "padding": 0,
+          "round": false
+        }
+      ]
+    },
+    {
+      "name": "leaves",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!datum.children"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.theme === 'Collectible Minifigures' ? ['Collectible', 'Minifigures'] : datum.theme === 'Super Heroes Marvel' ? ['Super Heroes', 'Marvel'] : datum.theme === 'Speed Champions' ? ['Speed', 'Champions'] : [datum.theme]",
+          "as": "label_lines"
+        },
+        {
+          "type": "formula",
+          "expr": "max(length(datum.label_lines[0]), datum.label_lines.length > 1 ? length(datum.label_lines[1]) : 0) * 7 + 12",
+          "as": "label_width"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "theme_colour",
+      "type": "ordinal",
+      "domain": {
+        "data": "owned",
+        "field": "theme",
+        "sort": {
+          "op": "min",
+          "field": "rank"
+        }
+      },
+      "range": [
+        "#E3000B",
+        "#FFDA24",
+        "#0055D9",
+        "#008B42",
+        "#F28C00",
+        "#6930B5",
+        "#00A0AF",
+        "#D94B76",
+        "#287443",
+        "#254590"
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "theme_rectangles",
+      "type": "rect",
+      "from": {
+        "data": "leaves"
+      },
+      "encode": {
+        "enter": {
+          "cursor": {
+            "value": "pointer"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fill": {
+            "scale": "theme_colour",
+            "field": "theme"
+          },
+          "stroke": {
+            "value": "#fffdf8"
+          },
+          "strokeWidth": {
+            "value": 2
+          },
+          "tooltip": {
+            "signal": "{'Theme': datum.theme, 'Rank': format(datum.rank, ',.0f'), 'Sets recorded as owned': format(datum.sets_recorded_owned, ',.0f')}"
+          }
+        },
+        "hover": {
+          "stroke": {
+            "value": "#222222"
+          },
+          "strokeWidth": {
+            "value": 3
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "interactive": false,
+      "from": {
+        "data": "leaves"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "(datum.x0 + datum.x1) / 2"
+          },
+          "y": {
+            "signal": "(datum.y0 + datum.y1) / 2"
+          },
+          "text": {
+            "field": "label_lines"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "font": {
+            "value": "Arial"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "lineHeight": {
+            "value": 15
+          },
+          "fill": {
+            "signal": "indexof(['City', 'Creator'], datum.theme) >= 0 ? '#171717' : '#ffffff'"
+          },
+          "opacity": {
+            "signal": "datum.x1 - datum.x0 >= datum.label_width && datum.y1 - datum.y0 >= datum.label_lines.length * 15 + 20 ? 1 : 0"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Monthly relative Google Trends search interest for LEGO in Australia. December 2023 is the supplied dataset peak (100). Not LEGO sales or total searches.",
+  "title": null,
+  "width": "container",
+  "height": 300,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "transparent",
+  "data": {
+    "url": "Data/lego_australia_search_interest_monthly_2004_2026.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "year": "number",
+        "month": "number",
+        "search_interest": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "calculate": "toDate(datum.date + '-01T00:00:00Z')",
+      "as": "month_date"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "month_date",
+      "type": "temporal",
+      "title": "Date",
+      "scale": {
+        "type": "utc",
+        "domain": [
+          "2004-01-01T00:00:00Z",
+          "2026-12-31T00:00:00Z"
+        ]
+      },
+      "axis": {
+        "format": "%Y",
+        "tickCount": 5,
+        "grid": false,
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "search_interest",
+      "type": "quantitative",
+      "title": "Search-interest index",
+      "scale": {
+        "domain": [
+          0,
+          100
+        ],
+        "nice": false
+      },
+      "axis": {
+        "values": [
+          0,
+          20,
+          40,
+          60,
+          80,
+          100
+        ]
+      }
+    },
+    "tooltip": [
+      {
+        "field": "month_date",
+        "type": "temporal",
+        "title": "Month and year",
+        "format": "%B %Y"
+      },
+      {
+        "field": "search_interest",
+        "type": "quantitative",
+        "title": "Search-interest index",
+        "format": ".0f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "area",
+        "color": "#E3000B",
+        "opacity": 0.24
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "color": "#B30009",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.date === '2023-12'"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "color": "#B30009",
+        "strokeDash": [
+          4,
+          4
+        ]
+      },
+      "encoding": {
+        "y": {
+          "datum": 0
+        },
+        "y2": {
+          "field": "search_interest"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.date === '2023-12'"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 90,
+        "color": "#E3000B",
+        "stroke": "#222222",
+        "strokeWidth": 1.5,
+        "opacity": 1
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.date === '2023-12'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "top",
+        "dx": -8,
+        "dy": 10,
+        "font": "Arial",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#8F0007",
+        "lineHeight": 14
+      },
+      "encoding": {
+        "text": {
+          "value": [
+            "December 2023",
+            "Highest interest: 100"
+          ]
+        }
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "monthly_hover",
+          "select": {
+            "type": "point",
+            "fields": [
+              "date"
+            ],
+            "nearest": true,
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "color": "#B30009",
+        "size": 50,
+        "cursor": "pointer"
+      },
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "param": "monthly_hover",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Arial",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "gridColor": "#e8e5dd"
+    }
+  }
+}

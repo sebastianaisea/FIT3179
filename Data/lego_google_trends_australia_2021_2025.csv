@@ -1,0 +1,9 @@
+state,state_code,lego_search_interest,latitude,longitude,period,source
+Australian Capital Territory,ACT,100,-35.4735,149.0124,2021-01-01 to 2025-12-31,Google Trends
+South Australia,SA,89,-30.0002,136.2092,2021-01-01 to 2025-12-31,Google Trends
+Tasmania,TAS,87,-42.0409,146.8087,2021-01-01 to 2025-12-31,Google Trends
+Western Australia,WA,85,-25.2303,121.0187,2021-01-01 to 2025-12-31,Google Trends
+Queensland,QLD,80,-20.9176,142.7028,2021-01-01 to 2025-12-31,Google Trends
+Victoria,VIC,80,-36.9848,144.3226,2021-01-01 to 2025-12-31,Google Trends
+New South Wales,NSW,75,-31.2532,146.9211,2021-01-01 to 2025-12-31,Google Trends
+Northern Territory,NT,51,-19.4914,132.551,2021-01-01 to 2025-12-31,Google Trends

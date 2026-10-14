@@ -1,0 +1,177 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "AG LEGO Certified Stores only, not all LEGO retailers. Population: March 2026. The ACT circle is a locator at Canberra, not an additional store or a store-count symbol.",
+  "title": null,
+  "width": "container",
+  "height": 400,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "transparent",
+  "data": {
+    "url": "Data/australian_states.geojson",
+    "format": {
+      "type": "json",
+      "property": "features"
+    }
+  },
+  "transform": [
+    {
+      "lookup": "properties.STATE_NAME",
+      "from": {
+        "data": {
+          "url": "Data/lego_ag_stores_per_million_2026.csv",
+          "format": {
+            "type": "csv",
+            "parse": {
+              "population_march_2026": "number",
+              "store_count_ag_directory": "number",
+              "ag_stores_per_million_residents": "number"
+            }
+          }
+        },
+        "key": "state_name",
+        "fields": [
+          "state",
+          "state_name",
+          "population_march_2026",
+          "store_count_ag_directory",
+          "ag_stores_per_million_residents"
+        ]
+      }
+    }
+  ],
+  "projection": {
+    "type": "mercator"
+  },
+  "encoding": {
+    "color": {
+      "field": "ag_stores_per_million_residents",
+      "type": "quantitative",
+      "title": "AG stores per million",
+      "scale": {
+        "domainMin": 0,
+        "range": [
+          "#FFDA24",
+          "#FF991F",
+          "#E3000B"
+        ],
+        "interpolate": "rgb"
+      },
+      "legend": {
+        "orient": "bottom",
+        "direction": "horizontal",
+        "gradientLength": 200,
+        "format": ".1f",
+        "titleFontSize": 12,
+        "labelFontSize": 11
+      }
+    },
+    "tooltip": [
+      {
+        "field": "state_name",
+        "type": "nominal",
+        "title": "State / territory"
+      },
+      {
+        "field": "store_count_ag_directory",
+        "type": "quantitative",
+        "title": "AG LEGO Certified Stores",
+        "format": ",.0f"
+      },
+      {
+        "field": "population_march_2026",
+        "type": "quantitative",
+        "title": "Population (March 2026)",
+        "format": ",.0f"
+      },
+      {
+        "field": "ag_stores_per_million_residents",
+        "type": "quantitative",
+        "title": "AG stores per million residents",
+        "format": ".3f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#fffdf8",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "stroke": {
+          "condition": {
+            "param": "state_hover",
+            "empty": false,
+            "value": "#222222"
+          },
+          "value": "#fffdf8"
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "state_hover",
+            "empty": false,
+            "value": 2.5
+          },
+          "value": 1.2
+        }
+      },
+      "name": "states",
+      "params": [
+        {
+          "name": "state_hover",
+          "select": {
+            "type": "point",
+            "fields": [
+              "state_name"
+            ],
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
+        }
+      ]
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.state === 'ACT'"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 100,
+        "stroke": "#222222",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "longitude": {
+          "datum": 149.13
+        },
+        "latitude": {
+          "datum": -35.28
+        },
+        "size": {
+          "condition": {
+            "param": "state_hover",
+            "empty": false,
+            "value": 180
+          },
+          "value": 100
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Arial",
+    "legend": {
+      "titleColor": "#222222",
+      "labelColor": "#444444"
+    }
+  }
+}

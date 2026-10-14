@@ -1,0 +1,193 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Annual ranks among five LEGO themes in Australia, based on average relative Google Trends search interest, 2021?2025. Not sales or total searches.",
+  "title": null,
+  "width": "container",
+  "height": 340,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "transparent",
+  "data": {
+    "url": "Data/lego_australia_top5_bump_2021_2025.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "year": "number",
+        "rank": "number",
+        "average_search_interest": "number"
+      }
+    }
+  },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "quantitative",
+      "title": "Year",
+      "scale": {
+        "domain": [
+          2021,
+          2026.6
+        ],
+        "nice": false,
+        "zero": false
+      },
+      "axis": {
+        "values": [
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "format": "d",
+        "grid": false,
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "rank",
+      "type": "quantitative",
+      "title": "Rank",
+      "scale": {
+        "domain": [
+          0.7,
+          5.3
+        ],
+        "reverse": true,
+        "zero": false,
+        "nice": false
+      },
+      "axis": {
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "format": "d"
+      }
+    },
+    "color": {
+      "field": "theme",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Star Wars",
+          "City",
+          "Technic",
+          "Minifigures",
+          "Creator"
+        ],
+        "range": [
+          "#E3000B",
+          "#C49300",
+          "#0055D9",
+          "#008B42",
+          "#F28C00"
+        ]
+      },
+      "legend": null
+    },
+    "opacity": {
+      "condition": {
+        "param": "bump_hover",
+        "empty": false,
+        "value": 1
+      },
+      "value": 0.75
+    },
+    "tooltip": [
+      {
+        "field": "theme",
+        "type": "nominal",
+        "title": "Theme"
+      },
+      {
+        "field": "year",
+        "type": "quantitative",
+        "title": "Year",
+        "format": "d"
+      },
+      {
+        "field": "rank",
+        "type": "quantitative",
+        "title": "Rank",
+        "format": "d"
+      },
+      {
+        "field": "average_search_interest",
+        "type": "quantitative",
+        "title": "Average search interest (0?100)",
+        "format": ".2f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2.5
+      },
+      "encoding": {
+        "order": {
+          "field": "year",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "bump_hover",
+          "select": {
+            "type": "point",
+            "fields": [
+              "theme"
+            ],
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 85,
+        "cursor": "pointer"
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year === 2025"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 9,
+        "font": "Arial",
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "text": {
+          "field": "theme"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Arial",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12,
+      "gridColor": "#e8e5dd"
+    }
+  }
+}

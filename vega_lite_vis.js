@@ -7,23 +7,41 @@ vegaEmbed("#lego_line_chart", vg_1, {
   actions: true
 }).catch(console.error);
 
-// Keep the navigation highlight in sync with the section being read.
-const sectionLinks = Array.from(document.querySelectorAll('.section-nav a'));
-const sectionObserver = new IntersectionObserver((entries) => {
-  const visible = entries.filter((entry) => entry.isIntersecting)
-    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-  if (!visible) return;
-  sectionLinks.forEach((link) => {
-    if (link.hash === '#' + visible.target.id) {
-      link.setAttribute('aria-current', 'location');
-    } else {
-      link.removeAttribute('aria-current');
-    }
-  });
-}, { rootMargin: '0px 0px -55% 0px' });
-document.querySelectorAll('main > section').forEach((section) => sectionObserver.observe(section));
 
 // Second graph: Piece counts by decade
 vegaEmbed("#lego_box_plot", vg_2, {
   actions: true
+}).catch(console.error);
+
+// Third graph: AG LEGO Certified Stores per million residents.
+vegaEmbed("#lego_australia_choropleth", "JS/lego_australia_choropleth.vg.json", {
+  actions: true,
+  renderer: "svg"
+}).catch(console.error);
+
+// Fourth graph: state shading represents relative LEGO search interest.
+vegaEmbed("#lego_australia_search_interest", "JS/lego_australia_search_interest.vg.json", {
+  actions: true,
+  renderer: "svg"
+}).catch(console.error);
+
+// True Vega treemap: resize to its panel.
+vegaEmbed("#lego_theme_ownership_treemap", "JS/lego_theme_ownership_treemap.vg.json", {
+  mode: "vega", actions: true, renderer: "svg"
+}).then(({ view }) => {
+  const panel = document.querySelector("#lego_theme_ownership_treemap");
+  const resize = () => view.width(Math.max(1, panel.clientWidth)).resize().runAsync().catch(console.error);
+  resize();
+  const observer = new ResizeObserver(resize);
+  observer.observe(panel);
+}).catch(console.error);
+
+// Australian theme popularity: annual Google Trends rankings.
+vegaEmbed("#lego_australia_theme_bump", "JS/lego_australia_theme_bump.vg.json", {
+  actions: true, renderer: "svg"
+}).catch(console.error);
+
+// Australian monthly LEGO search interest with the December 2023 peak annotated.
+vegaEmbed("#lego_australia_monthly_interest", "JS/lego_australia_monthly_interest.vg.json", {
+  actions: true, renderer: "svg"
 }).catch(console.error);

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Choropleth of relative LEGO search interest across Australian states and territories, Google Trends 2021-2025. Darker red indicates higher interest on a 0-100 index, not sales or total searches.",
+  "title": null,
+  "width": "container",
+  "height": 400,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "transparent",
+  "projection": {
+    "type": "mercator"
+  },
+  "data": {
+    "url": "Data/australian_states.geojson",
+    "format": {
+      "type": "json",
+      "property": "features"
+    }
+  },
+  "transform": [
+    {
+      "lookup": "properties.STATE_NAME",
+      "from": {
+        "data": {
+          "url": "Data/lego_google_trends_australia_2021_2025.csv",
+          "format": {
+            "type": "csv",
+            "parse": {
+              "lego_search_interest": "number"
+            }
+          }
+        },
+        "key": "state",
+        "fields": [
+          "state",
+          "state_code",
+          "lego_search_interest",
+          "period"
+        ]
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "interest_hover",
+      "select": {
+        "type": "point",
+        "fields": [
+          "state_code"
+        ],
+        "on": "pointerover",
+        "clear": "pointerout"
+      }
+    }
+  ],
+  "mark": {
+    "type": "geoshape",
+    "cursor": "pointer"
+  },
+  "encoding": {
+    "color": {
+      "field": "lego_search_interest",
+      "type": "quantitative",
+      "title": "Relative search-interest index (0-100)",
+      "scale": {
+        "domain": [
+          0,
+          100
+        ],
+        "range": [
+          "#FFF1B8",
+          "#FFDA24",
+          "#FF8C1A",
+          "#B30009"
+        ],
+        "interpolate": "rgb"
+      },
+      "legend": {
+        "orient": "bottom",
+        "direction": "horizontal",
+        "gradientLength": 200,
+        "values": [
+          0,
+          25,
+          50,
+          75,
+          100
+        ],
+        "format": ".0f",
+        "titleFontSize": 12,
+        "labelFontSize": 11,
+        "title": [
+          "Relative search interest (0-100)",
+          "Normalised by total Google searches",
+          "in each state or territory"
+        ]
+      }
+    },
+    "stroke": {
+      "condition": {
+        "param": "interest_hover",
+        "empty": false,
+        "value": "#222222"
+      },
+      "value": "#fffdf8"
+    },
+    "strokeWidth": {
+      "condition": {
+        "param": "interest_hover",
+        "empty": false,
+        "value": 2.5
+      },
+      "value": 1.2
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "type": "nominal",
+        "title": "State / territory"
+      },
+      {
+        "field": "lego_search_interest",
+        "type": "quantitative",
+        "title": "Relative search interest (0-100)",
+        "format": ".0f"
+      },
+      {
+        "field": "period",
+        "type": "nominal",
+        "title": "Period"
+      }
+    ]
+  },
+  "config": {
+    "font": "Arial",
+    "view": {
+      "stroke": null
+    },
+    "legend": {
+      "titleColor": "#222222",
+      "labelColor": "#444444"
+    }
+  }
+}
