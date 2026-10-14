@@ -28,15 +28,6 @@
       ]
     }
   ],
-  "mark": {
-    "type": "line",
-    "color": "#E3000B",
-    "strokeWidth": 3,
-    "point": {
-      "filled": true,
-      "size": 35
-    }
-  },
   "encoding": {
     "x": {
       "field": "year_released",
@@ -95,5 +86,14 @@
     "type": "fit",
     "contains": "padding"
   },
-  "background": "transparent"
+  "background": "transparent",
+  "mark": {
+    "type": "line",
+    "color": "#E3000B",
+    "strokeWidth": 3,
+    "point": {
+      "filled": true,
+      "size": 35
+    }
+  }
 }
